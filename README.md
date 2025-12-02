@@ -1,193 +1,166 @@
-# Contextual AI Sidebar
+# ContextualAI-Web-Content-Analyzer-Browser-Extension
 
-A browser extension that allows users to perform question-and-answer interactions based on the content of the current webpage, powered by Google's Gemini AI.
+![GitHub Logo Banner](https://img.shields.io/badge/Apex%20Architect%20Deployment-ContextualAI-Blue?style=for-the-badge&logo=github)
 
-**Last Updated:** May 16, 2025
+[![Build Status](https://img.shields.io/github/actions/workflow/status/chirag127/ContextualAI-Web-Content-Analyzer-Browser-Extension/ci.yml?label=Build&style=flat-square)](https://github.com/chirag127/ContextualAI-Web-Content-Analyzer-Browser-Extension/actions/workflows/ci.yml)
+[![Code Coverage](https://img.shields.io/codecov/c/github/chirag127/ContextualAI-Web-Content-Analyzer-Browser-Extension?label=Coverage&style=flat-square)](https://codecov.io/gh/chirag127/ContextualAI-Web-Content-Analyzer-Browser-Extension)
+[![Language](https://img.shields.io/github/languages/top/chirag127/ContextualAI-Web-Content-Analyzer-Browser-Extension?style=flat-square&color=yellow)](https://github.com/chirag127/ContextualAI-Web-Content-Analyzer-Browser-Extension)
+[![License](https://img.shields.io/github/license/chirag127/ContextualAI-Web-Content-Analyzer-Browser-Extension?style=flat-square)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/chirag127/ContextualAI-Web-Content-Analyzer-Browser-Extension?style=flat-square)](https://github.com/chirag127/ContextualAI-Web-Content-Analyzer-Browser-Extension)
 
-## Overview
+**⭐ Star this Repo** if you find this project valuable for enhancing information retrieval while browsing!
 
-Contextual AI Sidebar is a browser extension designed to enhance your browsing experience by providing an interactive way to query webpage content directly within the browser. The extension features a sidebar interface that integrates with the Gemini API for AI-powered responses, provides text-to-speech functionality for answers with user-configurable settings, and allows users to save their Q&A history locally.
+---
+
+## BLUF: Value Proposition
+
+**ContextualAI** transforms passive web browsing into an active, intelligent dialogue by leveraging the Gemini API to provide instant, context-aware Q&A directly on any webpage content. This extension enhances comprehension, speeds up research, and preserves critical information via integrated history saving and text-to-speech narration.
+
+## Architecture Overview
+
+This Browser Extension follows a highly decoupled, event-driven architecture utilizing modern web standards and strict separation between content scripts, background service workers, and the UI popup.
+
+ascii
+ContextualAI Browser Extension
+------------------------------
+
++------------------+
+|   User Interface |
+|     (Popup/DOM)  |
++--------+---------+
+         |
+    (Messaging API)
+         |
++--------v---------+
+| Background Worker|
+| (Service Worker) |
+| - History Mgmt    |
+| - API Key Proxy  |
++--------+---------+
+         |
+  (Content Scripts)
+         |
++--------v---------+
+| Active Web Page  |
+| - DOM Capture    |
+| - TTS Handler    |
++------------------+
+         |
+         v
++------------------+
+|   External API   |
+|   (Gemini Pro)   |
++------------------+
+
+
+## Table of Contents
+
+1. [BLUF: Value Proposition](#bluf-value-proposition)
+2. [Architecture Overview](#architecture-overview)
+3. [Features](#features)
+4. [Tech Stack (2026 Standard)](#tech-stack-2026-standard)
+5. [Development & Setup](#development--setup)
+6. [Contributing Guidelines](#contributing-guidelines)
+7. [Security & Compliance](#security--compliance)
+8. [🤖 AI Agent Directives](#ai-agent-directives)
+
+---
 
 ## Features
 
--   **Sidebar Interface**: Easily accessible via toolbar icon, context menu, or keyboard shortcut
--   **Content Extraction**: Automatically uses selected text or extracts main content from the webpage
--   **AI-Powered Q&A**: Ask questions about the webpage content and get answers from Gemini AI
--   **Text-to-Speech**: Listen to answers with customizable voice, speed, pitch, and volume
--   **Q&A History**: Save and manage your question-answer pairs for future reference
--   **User Settings**: Configure API key, TTS settings, and history preferences
+*   **AI-Powered Q&A:** Submit questions about visible page content to the Gemini API and receive synthesized answers instantly in the extension popup.
+*   **Context Preservation:** Advanced text selection handling ensures queries are framed precisely based on user interaction.
+*   **Text-to-Speech (TTS):** Convert Gemini responses into natural audio for hands-free consumption.
+*   **Session History:** Securely saves all queries, context snippets, and answers locally within the browser's storage.
+*   **Manifest V3 Compliance:** Built entirely on the latest security and performance standards for browser extensions.
 
-## Prerequisites
+## Tech Stack (2026 Standard)
 
--   A modern Chromium-based browser (Chrome, Edge, etc.)
--   A Gemini API key from [Google AI Studio](https://ai.google.dev/)
--   Node.js and npm (for backend deployment)
+| Component | Technology | Justification |
+| :--- | :--- | :--- |
+| Core Language | JavaScript (ESM) | Ubiquity and extension ecosystem standard. |
+| Framework | **Vite** + Native Web Components | Maximum build speed and minimized runtime overhead for extensions. |
+| State Mgmt | Signals API / Native Storage | Lightweight, performance-focused state handling. |
+| API Interaction | Gemini API (via Proxy) | State-of-the-art reasoning capabilities. |
+| Styling | Vanilla CSS Modules | Predictable scoping, zero framework bloat. |
+| Linting/Formatting | **Biome** | Apex standard for unified, high-speed code quality enforcement. |
 
-## Installation
+## Development & Setup
 
-### Extension Installation
+This project uses **JavaScript/TypeScript**, managed via **npm/yarn**, and configured for optimal development velocity using Vite.
 
-1. Clone this repository:
-
-    ```
-    git clone https://github.com/chirag127/Contextual-AI-Sidebar.git
-    ```
-
-2. Open your browser and navigate to the extensions page:
-
-    - Chrome: `chrome://extensions/`
-    - Edge: `edge://extensions/`
-
-3. Enable "Developer mode" in the top-right corner.
-
-4. Click "Load unpacked" and select the `extension` folder from the cloned repository.
-
-5. The extension should now be installed and visible in your browser toolbar.
-
-### Backend Deployment
-
-The backend server can be deployed to a PaaS like Render, Heroku, or Vercel. Here's how to set it up locally for development:
-
-1. Navigate to the backend directory:
-
-    ```
-    cd Contextual-AI-Sidebar/backend
-    ```
-
-2. Install dependencies:
-
-    ```
+1.  **Clone Repository:**
+    bash
+    git clone https://github.com/chirag127/ContextualAI-Web-Content-Analyzer-Browser-Extension.git
+    cd ContextualAI-Web-Content-Analyzer-Browser-Extension
+    
+2.  **Install Dependencies (Apex uv/npm Standard):**
+    bash
     npm install
-    ```
+    
+3.  **Start Development Server (Hot Reload):**
+    bash
+    npm run dev
+    
+4.  **Build for Production:**
+    bash
+    npm run build
+    
 
-3. Create a `.env` file based on `.env.example` and configure your environment variables.
+### Scripts Table
 
-4. Start the server:
+| Script | Command | Description |
+| :--- | :--- | :--- |
+| `dev` | `npm run dev` | Start development server with hot module reloading. |
+| `build` | `npm run build` | Compile production-ready extension artifacts. |
+| `lint` | `npx @biomejs/biome check .` | Run static analysis and linting checks. |
+| `format` | `npx @biomejs/biome format --write .` | Automatically format all source files. |
+| `test:unit` | `npx vitest` | Run unit tests. |
+| `test:e2e` | `npx playwright test` | Execute End-to-End validation suites. |
 
-    ```
-    npm start
-    ```
+### Guiding Principles
 
-5. The server should now be running at `http://localhost:3000`.
+*   **SOLID:** Maintain single responsibility for Content Scripts, Background Workers, and UI components.
+*   **DRY:** Abstract API interaction layers and storage handlers aggressively.
+*   **YAGNI:** Do not implement features until explicitly required by the use case.
 
-## Usage
+## Contributing Guidelines
 
-1. **Initial Setup**:
+Please refer to the comprehensive guidelines in [.github/CONTRIBUTING.md](./.github/CONTRIBUTING.md).
 
-    - Click on the extension icon in your browser toolbar to open the sidebar.
-    - Go to Settings by clicking the gear icon at the bottom of the sidebar.
-    - Enter your Gemini API key and configure other settings as desired.
-    - Save your settings.
+## Security & Compliance
 
-2. **Asking Questions**:
+Sensitive API keys are **NEVER** stored in client-side code. All external API calls (Gemini) MUST be proxied through the Background Service Worker to prevent key exposure, as detailed in [.github/SECURITY.md](./.github/SECURITY.md).
 
-    - Navigate to any webpage you want to query.
-    - Open the sidebar using the toolbar icon, context menu, or keyboard shortcut (default: `Ctrl+Shift+S` or `Cmd+Shift+S`).
-    - Type your question in the input field and click "Ask" or press `Ctrl+Enter`.
-    - The answer will be displayed in the sidebar.
+---
 
-3. **Using Text-to-Speech**:
+<details>
+<summary>🤖 AI Agent Directives (Apex Architecture Protocol)</summary>
 
-    - After receiving an answer, use the TTS controls to listen to it.
-    - Play, pause, or stop the speech as needed.
-    - Customize TTS settings in the Settings panel.
+## 🤖 APEX AGENT DIRECTIVES: CONTEXTUALAI
 
-4. **Managing History**:
-    - View your Q&A history by clicking the "History" tab in the sidebar.
-    - Copy or delete individual history entries.
-    - Clear all history or disable history saving in the Settings panel.
+**Project ID:** `ContextualAI-Web-Content-Analyzer-Browser-Extension`
+**Objective:** Maintain a zero-defect, high-velocity development cycle for this modern Manifest V3 browser extension.
 
-## Project Structure
+### 1. Architectural Mandate
+*   **Pattern Adherence:** Strict adherence to the **Event-Driven Architecture (EDA)** model via Chrome Messaging API for inter-script communication.
+*   **State Management:** Utilize native browser storage APIs (`chrome.storage.local`/`sync`) exclusively. Avoid third-party state libraries.
+*   **Performance Pruning:** All bundle sizes must be aggressively tree-shaken using Vite build targets. Content scripts must load asynchronously and only when necessary.
 
-```
-contextual-ai-sidebar/
-├── extension/                   # All browser extension code
-│   ├── manifest.json
-│   ├── icons/
-│   │   └── icon16.png (and other sizes)
-│   ├── sidebar/                 # HTML, CSS, JS for the sidebar UI
-│   │   ├── sidebar.html
-│   │   ├── sidebar.css
-│   │   └── sidebar.js
-│   ├── options/                 # HTML, CSS, JS for the settings page
-│   │   ├── options.html
-│   │   ├── options.css
-│   │   └── options.js
-│   ├── background/              # Background scripts
-│   │   └── service-worker.js    # For Manifest V3
-│   ├── content_scripts/         # Scripts injected into web pages
-│   │   └── content-extractor.js # For extracting page content or interacting with DOM
-│   └── utils/                   # Shared utility functions
-│       └── tts-handler.js
-├── backend/                     # Node.js/Express backend code
-│   ├── server.js                # Main server file
-│   ├── package.json
-│   ├── routes/
-│   │   └── api.js               # API routes for Q&A
-│   └── services/
-│       └── gemini-service.js    # Logic for interacting with Gemini API
-└── README.md
-```
+### 2. Technology Stack Specification (LATE 2025)
+*   **Language:** JavaScript/TypeScript (prefer TypeScript where interfaces are complex).
+*   **Linter/Formatter:** **Biome** (enforced via pre-commit hook or CI).
+*   **Unit Testing:** **Vitest** for isolated function/logic testing.
+*   **E2E Testing:** **Playwright** for simulating user flows (e.g., opening popup, highlighting text, receiving AI response).
+*   **API Key Management:** All Gemini API interactions must be routed through the `background.js` service worker to ensure the API key remains secret and never exposed to the content scripts or popup DOM.
 
-## API Documentation
+### 3. Verification Commands
+To ensure alignment with Apex standards, an agent must execute the following verification sequence:
 
-### Backend API Endpoints
+1.  **Code Quality Check:** `npm run lint` (Must return zero errors).
+2.  **Unit Test Pass:** `npm run test:unit` (Must achieve 90%+ coverage baseline).
+3.  **Build Integrity Check:** `npm run build` (Must produce valid `manifest.json` structure for MV3).
 
-#### `POST /api/ask`
+**Action:** Any new feature implementation MUST include corresponding unit and integration tests.
 
-Get an answer from Gemini based on webpage content and a question.
-
-**Request Body:**
-
-```json
-{
-    "apiKey": "your-gemini-api-key",
-    "pageContent": "The content of the webpage",
-    "question": "Your question about the content"
-}
-```
-
-**Response:**
-
-```json
-{
-    "answer": "The answer from Gemini AI"
-}
-```
-
-**Error Responses:**
-
--   `400 Bad Request`: Missing required parameters
--   `401 Unauthorized`: Invalid API key
--   `429 Too Many Requests`: Rate limit exceeded
--   `500 Internal Server Error`: Server error
-
-## Tech Stack
-
--   **Extension**:
-
-    -   Manifest V3
-    -   HTML, CSS, JavaScript
-    -   Chrome Extension APIs
-    -   Web Speech API for TTS
-
--   **Backend**:
-    -   Node.js
-    -   Express.js
-    -   Google Gemini API (@google/genai)
-    -   Sentry for error tracking
-
-## Security
-
--   The Gemini API key is stored securely using `chrome.storage.sync`.
--   The API key is transmitted to the backend exclusively over HTTPS.
--   The backend does not store the user's API key persistently.
--   The extension requests minimal browser permissions necessary for its functionality.
-
-## License
-
-MIT
-
-## Author
-
-Chirag Singhal (GitHub: [chirag127](https://github.com/chirag127))
+</details>
