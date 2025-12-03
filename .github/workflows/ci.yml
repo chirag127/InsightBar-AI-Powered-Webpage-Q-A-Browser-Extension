@@ -1,0 +1,59 @@
+# === APEX CI/CD PIPELINE (DECEMBER 2025 STANDARD) ===
+# This workflow enforces FAANG-level engineering standards for the repository.
+# It validates code quality, runs comprehensive tests, and ensures build integrity.
+
+name: 'CI/CD - Build, Lint, and Test'
+
+on:
+  push:
+    branches: [ 'main' ]
+  pull_request:
+    branches: [ 'main' ]
+
+# Enforce security best practices by default
+permissions:
+  contents: read
+
+# Cancel outdated workflow runs on the same branch/PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # This job orchestrates all quality gates: linting, testing, and building.
+  build-and-test:
+    name: 'Build & Test Suite'
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x] # Use the current LTS version of Node.js
+
+    steps:
+      - name: '1. Checkout Repository'
+        uses: actions/checkout@v4
+
+      - name: '2. Setup Node.js ${{ matrix.node-version }} Environment'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: '3. Install Project Dependencies'
+        run: npm ci
+
+      - name: '4. Lint & Format Check (Biome)'
+        run: npm run lint:check # Assumes a script: "biome check ."
+
+      - name: '5. Run Unit & Integration Tests (Vitest)'
+        run: npm test # Assumes a script: "vitest run --coverage"
+
+      - name: '6. Install E2E Test Dependencies (Playwright)'
+        run: npx playwright install --with-deps
+
+      - name: '7. Run End-to-End Tests (Playwright)'
+        run: npm run test:e2e # Assumes a script: "playwright test"
+
+      - name: '8. Build Production Artifact (Vite)'
+        run: npm run build # Assumes a script: "vite build"
