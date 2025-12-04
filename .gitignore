@@ -1,43 +1,48 @@
-# General
-.DS_Store
-*.log
-
-# Node/NPM dependencies
+# Node.js
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+
+# IDE / Editor
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+*.DS_Store
 
 # Build output
 dist/
 build/
-.env
-.env.*
 
-# Editor/IDE specific
-.vscode/
-.idea/
-*.swp
-*.swo
+# Logs
+logs/
+*.log
+npm-audit.log*
+yarn-audit.log*
+pnpm-audit.log*
+
+# Runtime data
+*.pid
+*.seed
+*.pid.lock
+
+# Browser extension build artifacts
+*.crx
+*.crx.sig
+*.xpi
+
+# Vite specific
+.vite/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # Testing
 coverage/
-*.coverage
-pytest_cache/
-
-# Python cache/compiled files
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-# Browser Extension Specific
-manifest.json.tmp # Temporary for extensions
-*.crx
-*.xpi
-
-# Electron/Tauri specific
-.vite/^
-
-# Windows specific
-Thumbs.db
